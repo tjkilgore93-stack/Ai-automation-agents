@@ -1,10 +1,10 @@
 import { createHmac, timingSafeEqual, randomUUID } from 'node:crypto';
 import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { extname, isAbsolute, join, normalize, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('.', import.meta.url));
+const root = join(fileURLToPath(new URL('.', import.meta.url)), '.');
 const publicDir = join(root, 'public');
 const dataDir = join(root, 'data');
 const dataFile = join(dataDir, 'store.json');
@@ -15,6 +15,13 @@ const product = {
   price: '$297',
   description: 'Build and launch one reliable AI-agent workflow for your creator business.'
 };
+
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
 
 async function loadStore() {
   try {
@@ -37,11 +44,34 @@ function json(response, status, body) {
   response.end(JSON.stringify(body));
 }
 
-async function body(request) {
+async function readRawBody(request) {
   let raw = '';
   for await (const chunk of request) raw += chunk;
-  if (raw.length > 100_000) throw new Error('Request body is too large');
-  return JSON.parse(raw || '{}');
+  if (raw.length > 100_000) throw new HttpError(413, 'Request body is too large.');
+  return raw;
+}
+
+function parseJson(raw) {
+  try {
+    return JSON.parse(raw || '{}');
+  } catch {
+    throw new HttpError(400, 'Invalid JSON body.');
+  }
+}
+
+function isRecord(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function withinDirectory(baseDir, candidate) {
+  const pathDifference = relative(baseDir, candidate);
+  return pathDifference === '' || (!pathDifference.startsWith('..') && !isAbsolute(pathDifference));
+}
+
+async function body(request) {
+  const input = parseJson(await readRawBody(request));
+  if (!isRecord(input)) throw new HttpError(400, 'Request body must be a JSON object.');
+  return input;
 }
 
 function envReady() {
@@ -76,7 +106,7 @@ async function createCheckoutSession(email) {
 }
 
 function verifyStripeSignature(raw, signature) {
-  if (!process.env.STRIPE_WEBHOOK_SECRET) return false;
+  if (!process.env.STRIPE_WEBHOOK_SECRET || typeof signature !== 'string' || !signature) return false;
   const parts = Object.fromEntries(signature.split(',').map((part) => part.split('=')));
   const timestamp = Number(parts.t);
   if (!timestamp || Math.abs(Date.now() / 1000 - timestamp) > 300) return false;
@@ -156,15 +186,14 @@ async function handleCheckout(request, response) {
 }
 
 async function handleWebhook(request, response) {
-  let raw = '';
-  for await (const chunk of request) raw += chunk;
+  const raw = await readRawBody(request);
   const signature = request.headers['stripe-signature'];
   if (!verifyStripeSignature(raw, signature)) return json(response, 400, { error: 'Invalid webhook signature.' });
-  const event = JSON.parse(raw);
+  const event = parseJson(raw);
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    const email = session.customer_details?.email || session.customer_email;
-    if (email) {
+    const email = String(session.customer_details?.email || session.customer_email || '').trim().toLowerCase();
+    if (isEmail(email)) {
       const store = await loadStore();
       if (!store.orders.some((order) => order.sessionId === session.id)) {
         const token = accessToken(email);
@@ -199,21 +228,31 @@ async function handleUnsubscribe(url, response) {
 }
 
 async function staticFile(pathname, response) {
-  const fileName = pathname === '/' ? 'index.html' : pathname.slice(1);
+  let fileName;
+  try {
+    fileName = decodeURIComponent(pathname === '/' ? 'index.html' : pathname.slice(1));
+  } catch {
+    return json(response, 404, { error: 'Not found' });
+  }
   const requested = normalize(join(publicDir, fileName));
   const repositoryUpload = normalize(join(root, fileName));
+  const withinPublicDir = withinDirectory(publicDir, requested);
+  const withinRoot = withinDirectory(root, repositoryUpload);
+  if (!withinPublicDir && !withinRoot) return json(response, 404, { error: 'Not found' });
   try {
     let candidate = requested;
     let content;
     try {
+      if (!withinPublicDir) throw Object.assign(new Error('Not found'), { code: 'ENOENT' });
       content = await readFile(candidate);
     } catch (error) {
       if (error.code !== 'ENOENT') throw error;
+      if (!withinRoot) throw error;
       candidate = repositoryUpload;
       content = await readFile(candidate);
     }
     const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript' };
-    response.writeHead(200, { 'Content-Type': `${types[extname(candidate)] || 'application/octet-stream'}; charset=utf-8' });
+    response.writeHead(200, { 'Content-Type': `${types[extname(candidate)] || 'application/octet-stream'}; charset=utf-8` });
     response.end(content);
   } catch (error) {
     if (error.code === 'ENOENT') return json(response, 404, { error: 'Not found' });
@@ -233,6 +272,7 @@ const server = createServer(async (request, response) => {
     if (request.method === 'GET') return await staticFile(url.pathname, response);
     return json(response, 405, { error: 'Method not allowed.' });
   } catch (error) {
+    if (error instanceof HttpError) return json(response, error.status, { error: error.message });
     console.error(error);
     return json(response, 500, { error: 'The request could not be completed.' });
   }
