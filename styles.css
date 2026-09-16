@@ -1,0 +1,8 @@
+:root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #edf2ff; background: #0b1020; }
+* { box-sizing: border-box; } body { margin: 0; } main { max-width: 980px; margin: auto; padding: 24px; }
+.hero { padding: 90px 0 55px; max-width: 760px; } .eyebrow { color: #91a7ff; letter-spacing: .14em; font-size: .78rem; font-weight: 700; }
+h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: .98; margin: 20px 0; } h2 { font-size: 1.7rem; } .lede { color: #b7c1db; font-size: 1.25rem; line-height: 1.6; } .fine-print { color: #7f8ba8; font-size: .85rem; }
+.button { display: inline-block; border: 0; border-radius: 10px; background: #7690ff; color: #09102b; font-weight: 800; padding: 14px 20px; text-decoration: none; cursor: pointer; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 30px 0; } .grid article, .card { border: 1px solid #263354; border-radius: 18px; padding: 25px; background: #111a31; } .card { margin: 20px 0; max-width: 680px; } .accent { border-color: #5268c7; }
+input[type=email] { width: 100%; border: 1px solid #3b4b73; border-radius: 8px; background: #0b1020; color: white; padding: 14px; margin: 12px 0; } label { display: block; color: #aeb9d4; margin: 8px 0 18px; } li { margin: 10px 0; color: #b7c1db; } .price { font-size: 2rem; font-weight: 800; } [role=status] { min-height: 1.3em; color: #9fe3b1; }
+@media (max-width: 650px) { .grid { grid-template-columns: 1fr; } .hero { padding-top: 45px; } }

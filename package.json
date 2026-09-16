@@ -1,0 +1,14 @@
+{
+  "name": "ai-agent-automation-bootcamp-funnel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted lead capture and Stripe checkout funnel for AI Agent Automation Bootcamp",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test server.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
