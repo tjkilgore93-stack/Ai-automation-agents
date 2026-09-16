@@ -1,54 +1,53 @@
 # ai-agent-automation-funnel
 
-Self-hosted AI Agent Automation Bootcamp funnel with Stripe and Resend.
+Self-hosted Node.js funnel for the AI Agent Automation Bootcamp.
 
-This repository contains the starter code and deployment automation for a funnel that powers an AI Agent Automation Bootcamp — payments via Stripe, transactional email via Resend, and self-hosted deployment patterns.
+## Requirements
 
-## Features
+- Node.js 20 or newer
+- npm
 
-- Stripe integration for payments
-- Resend integration for transactional email
-- Example agent automation flows
-- Deployment and automation scripts
+## Install
 
-## Prerequisites
+```bash
+npm install
+```
 
-- Node.js (16+ recommended)
-- npm or yarn
-- A Stripe account and API keys
-- A Resend account and API key
+## Environment variables
 
-## Quick start
+Copy `.env.example` to `.env` and set the values you need:
 
-1. Clone the repo
+- `PORT` - optional HTTP port, defaults to `3000`
+- `BASE_URL` - optional public base URL, defaults to `http://localhost:<PORT>`
+- `COURSE_ACCESS_SECRET` - required for stable course and unsubscribe tokens outside local development
+- `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET` - required for live Stripe checkout and webhook verification
+- `RESEND_API_KEY`, `FROM_EMAIL` - required to send lead and course-access emails
 
-   git clone https://github.com/tjkilgore93-stack/ai-agent-automation-funnel.git
-   cd ai-agent-automation-funnel
+## Run
 
-2. Install dependencies
+Start the server:
 
-   npm install
-   # or
-   yarn install
+```bash
+npm start
+```
 
-3. Copy environment example and set secrets
+Run the test suite:
 
-   cp .env.example .env
-   # Fill in STRIPE_API_KEY, RESEND_API_KEY, and other env vars
+```bash
+npm test
+```
 
-4. Run the app in development
+## Current behavior
 
-   npm run dev
+- When Stripe is configured, `/api/checkout` creates a Stripe Checkout session.
+- When Stripe is not configured, `/api/checkout` returns a demo success URL instead of calling Stripe.
+- When Resend is not configured, lead capture and order handling still work, but email sending is skipped.
 
-## Development
+## GitHub Actions
 
-- Scripts are defined in package.json (start, dev, build, test)
-- Add integration keys to environment variables and DO NOT commit them
-
-## Contributing
-
-Contributions are welcome. Please open issues for bugs or feature requests and create PRs for changes.
+- `Node.js CI` installs dependencies and runs the Node test suite on supported Node versions.
+- The release workflow keeps the verification steps, but only attempts `npm publish` when the package is not marked `private` in `package.json`. Private repositories therefore test successfully on release without trying to publish to npm.
 
 ## License
 
-This project is licensed under the MIT License — see the LICENSE file for details.
+This project is licensed under the MIT License. See `LICENSE`.
