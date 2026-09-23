@@ -1,0 +1,11 @@
+﻿Time,Source,Event,Detail
+09:01:12,atlas,router,Revenue leakage detected
+09:01:13,mission,scheduled,FTM‑02 scheduled
+09:01:14,mission,prioritized,Score 85
+09:01:15,atlas,dependency,Revenue → Infra
+09:01:16,mission,sequenced,Revenue first
+09:01:17,mission,started,Running monetization experiments
+09:01:22,mission,retry,Experiment #2 failed
+09:01:28,mission,completed,Revenue lift achieved
+09:01:29,mission,started,Infra scaling
+09:01:34,mission,completed,Infra optimized
