@@ -3,45 +3,123 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080811">
   <title>AI Agent Automation Bootcamp</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <main>
     <section class="hero">
-      <p class="eyebrow">AI AGENT AUTOMATION BOOTCAMP</p>
-      <h1>Turn repetitive creator work into a reliable AI-agent workflow.</h1>
-      <p class="lede">A practical course for consumers and creators who want one useful automation they can understand, test, and improve.</p>
-      <a class="button" href="#checkout">Build your workflow</a>
-      <p class="fine-print">Self-paced lessons, templates, and implementation guidance. No income guarantees.</p>
+      <div class="hero-copy">
+        <a class="brand" href="/" aria-label="AI Agent Automation Bootcamp home">
+          <span class="brand-mark" aria-hidden="true">A</span>
+          <span>AI WORKFLOW<span class="brand-light">LAB</span></span>
+        </a>
+        <p class="eyebrow">A PRACTICAL AUTOMATION SYSTEM</p>
+        <h1>AI Agent<br><span>Bootcamp</span></h1>
+        <p class="lede">Turn repetitive work into reliable workflows you can understand, test, and improve.</p>
+        <a class="button" href="#checkout">Build your workflow <span aria-hidden="true">↗</span></a>
+        <p class="fine-print">Self-paced lessons, templates, and implementation guidance.</p>
+
+        <div class="feature-list">
+          <article class="feature">
+            <span class="feature-icon violet" aria-hidden="true">✳</span>
+            <div><h2>Find the right task</h2><p>Spot repeatable work worth automating.</p></div>
+          </article>
+          <article class="feature">
+            <span class="feature-icon purple" aria-hidden="true">⌁</span>
+            <div><h2>Build with confidence</h2><p>Connect triggers, context, and actions.</p></div>
+          </article>
+          <article class="feature">
+            <span class="feature-icon green" aria-hidden="true">◉</span>
+            <div><h2>Keep it reliable</h2><p>Test safely, verify results, and stay in control.</p></div>
+          </article>
+        </div>
+        <p class="hero-note">A practical first step toward a business that runs smoother.</p>
+      </div>
+
+      <div class="showcase" aria-label="Preview of an AI automation workflow dashboard">
+        <div class="showcase-top">
+          <span><i class="status-dot"></i> WORKFLOW CONTROL</span>
+          <span class="live-pill">SYSTEM READY</span>
+        </div>
+        <div class="dashboard">
+          <div class="dashboard-rail">
+            <span class="rail-logo">✳</span>
+            <span class="rail-item selected">⌂</span>
+            <span class="rail-item">◫</span>
+            <span class="rail-item">⌁</span>
+            <span class="rail-item">⚙</span>
+          </div>
+          <div class="dashboard-main">
+            <div class="dashboard-heading">
+              <div><p class="dashboard-label">YOUR AUTOMATION STUDIO</p><h2>Good work, on autopilot.</h2></div>
+              <span class="avatar">AI</span>
+            </div>
+            <div class="status-card">
+              <div class="status-card-title"><span>LEAD FOLLOW-UP</span><span class="running">● ACTIVE</span></div>
+              <div class="workflow">
+                <div class="workflow-node"><span>01</span><b>New lead</b><small>Form submitted</small></div>
+                <span class="workflow-arrow" aria-hidden="true">→</span>
+                <div class="workflow-node agent-node"><span>02</span><b>AI agent</b><small>Personalized reply</small></div>
+                <span class="workflow-arrow" aria-hidden="true">→</span>
+                <div class="workflow-node"><span>03</span><b>Follow up</b><small>Task created</small></div>
+              </div>
+              <div class="activity"><span class="activity-pulse"></span><span>Workflow checked</span><b>All systems go</b></div>
+            </div>
+            <div class="dashboard-bottom">
+              <div class="metric-card"><p>TIME SAVED</p><strong>4.5 <small>hrs / week</small></strong><span class="metric-line"></span></div>
+              <div class="metric-card"><p>LAST RUN</p><strong>Just now</strong><span class="run-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+            </div>
+            <div class="dashboard-caption"><span>BUILT WITH HUMAN OVERSIGHT</span><span>● READY</span></div>
+          </div>
+        </div>
+        <div class="showcase-orbit orbit-one"></div>
+        <div class="showcase-orbit orbit-two"></div>
+      </div>
+
+      <div class="value-strip">
+        <div><span class="strip-icon">✧</span><span><b>Build once.</b><small>Improve as you go.</small></span></div>
+        <div><span class="strip-icon">∞</span><span><b>One workflow.</b><small>Room to grow.</small></span></div>
+        <div><span class="strip-icon">↗</span><span><b>Stay in control.</b><small>AI works with you.</small></span></div>
+      </div>
     </section>
-    <section class="grid">
-      <article><h2>Map</h2><p>Find one repeatable task worth automating.</p></article>
-      <article><h2>Build</h2><p>Design triggers, context, actions, verification, and human approval.</p></article>
-      <article><h2>Launch</h2><p>Test with safe data and ship a workflow with a fallback.</p></article>
+
+    <section class="steps">
+      <div class="section-heading"><p class="eyebrow">FROM IDEA TO FIRST RUN</p><h2>Make your next workflow a useful one.</h2></div>
+      <div class="step-grid">
+        <article><span>01 / MAP</span><h3>Choose a task</h3><p>Find a repeatable process that is worth your time to improve.</p></article>
+        <article><span>02 / BUILD</span><h3>Design the workflow</h3><p>Define triggers, context, actions, verification, and human approval.</p></article>
+        <article><span>03 / LAUNCH</span><h3>Test it safely</h3><p>Run with safe data, check the result, and keep a fallback in reach.</p></article>
+      </div>
     </section>
-    <section class="card">
-      <h2>Get the free automation scorecard</h2>
-      <p>Identify your best first workflow before you buy anything.</p>
-      <form id="lead-form">
-        <input type="email" name="email" placeholder="you@example.com" required>
-        <label><input type="checkbox" name="consent" required> Email me the scorecard and practical course updates.</label>
-        <button class="button" type="submit">Send my scorecard</button>
-        <p id="lead-status" role="status"></p>
-      </form>
+
+    <section class="conversion-grid">
+      <div class="card lead-card">
+        <p class="eyebrow">START WITH CLARITY</p>
+        <h2>Get the free automation scorecard</h2>
+        <p>Identify your best first workflow before you buy anything.</p>
+        <form id="lead-form">
+          <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
+          <label><input type="checkbox" name="consent" required> Email me the scorecard and practical course updates.</label>
+          <button class="button" type="submit">Send my scorecard <span aria-hidden="true">↗</span></button>
+          <p id="lead-status" class="form-status" role="status"></p>
+        </form>
+      </div>
+      <div id="checkout" class="card checkout-card">
+        <p class="eyebrow">CORE PROGRAM</p>
+        <h2>AI Agent Automation Bootcamp</h2>
+        <p>Build one reliable automation from idea to tested first run.</p>
+        <ul><li>Workflow opportunity scorecard</li><li>Implementation templates</li><li>Reliability and privacy checklist</li><li>Activation guidance</li></ul>
+        <p class="price">$297 <span>one-time</span></p>
+        <form id="checkout-form">
+          <input type="email" name="email" placeholder="Email for course access" aria-label="Email for course access" required>
+          <button class="button" type="submit">Continue to secure checkout <span aria-hidden="true">↗</span></button>
+          <p id="checkout-status" class="form-status" role="status"></p>
+        </form>
+      </div>
     </section>
-    <section id="checkout" class="card accent">
-      <p class="eyebrow">CORE PROGRAM</p>
-      <h2>AI Agent Automation Bootcamp</h2>
-      <p>Build one reliable automation from idea to tested first run.</p>
-      <ul><li>Workflow opportunity scorecard</li><li>Implementation templates</li><li>Reliability and privacy checklist</li><li>Activation guidance</li></ul>
-      <p class="price">$297 one-time</p>
-      <form id="checkout-form">
-        <input type="email" name="email" placeholder="Email for course access" required>
-        <button class="button" type="submit">Continue to secure checkout</button>
-        <p id="checkout-status" role="status"></p>
-      </form>
-    </section>
+    <footer><span>AI WORKFLOW LAB</span><span>Practical automation. Human in control.</span></footer>
   </main>
   <script src="/app.js"></script>
 </body>
