@@ -51,6 +51,17 @@ test('non-object JSON bodies return a controlled 400 response', async () => {
   assert.deepEqual(data, { error: 'Request body must be a JSON object.' });
 });
 
+test('request bodies larger than 100 KB are rejected based on byte size', async () => {
+  const { response, data } = await request('/api/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'é'.repeat(50_001) })
+  });
+
+  assert.equal(response.status, 413);
+  assert.deepEqual(data, { error: 'Request body is too large.' });
+});
+
 test('missing Stripe signature headers return an invalid signature response', async () => {
   const originalSecret = process.env.STRIPE_WEBHOOK_SECRET;
   process.env.STRIPE_WEBHOOK_SECRET = 'test-webhook-secret';
