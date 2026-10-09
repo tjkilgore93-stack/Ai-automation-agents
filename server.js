@@ -45,10 +45,21 @@ function json(response, status, body) {
 }
 
 async function readRawBody(request) {
-  let raw = '';
-  for await (const chunk of request) raw += chunk;
-  if (raw.length > 100_000) throw new HttpError(413, 'Request body is too large.');
-  return raw;
+  const chunks = [];
+  let byteLength = 0;
+  let tooLarge = false;
+  for await (const chunk of request) {
+    byteLength += chunk.length;
+    if (tooLarge) continue;
+    if (byteLength > 100_000) {
+      tooLarge = true;
+      chunks.length = 0;
+      continue;
+    }
+    chunks.push(chunk);
+  }
+  if (tooLarge) throw new HttpError(413, 'Request body is too large.');
+  return Buffer.concat(chunks).toString('utf8');
 }
 
 function parseJson(raw) {
