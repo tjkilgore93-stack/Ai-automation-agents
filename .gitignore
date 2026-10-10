@@ -64,3 +64,6 @@ public
 *.njsproj
 *.sln
 *.swp
+
+# Saropa Log Capture (index & cache)
+.saropa/
